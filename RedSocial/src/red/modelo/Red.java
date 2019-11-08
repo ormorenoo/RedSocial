@@ -32,5 +32,21 @@ public class Red
 		return usuarios;
 	}
 	
+	public Usuario buscarUsuario(String nombre)
+	{
+		Usuario u = null;
+		ArrayList<Usuario> usuarios = getUsuarios();
+		
+		for(int i = 0 ; i < usuarios.size() ; i++)
+		{
+			Usuario userB = usuarios.get(i);
+			
+			if(nombre.equalsIgnoreCase(userB.getNick()) || nombre.equalsIgnoreCase(userB.getNombreUsuario()))
+			{
+				u = userB;
+			}
+		}return u;
+	}
+	
 	
 }

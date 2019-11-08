@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 public class PanelUsuario extends JPanel implements ActionListener{
 
@@ -29,6 +30,9 @@ public class PanelUsuario extends JPanel implements ActionListener{
 	private VentanaPrincipal principal;
 	private JTable table;
 	private JButton btnAtras;
+	private JTextField txtNombreUsuario;
+	private JButton btnEnviarSolicitud;
+	private JButton btnEnviarMensaje;
 
 
 	/**
@@ -45,9 +49,21 @@ public class PanelUsuario extends JPanel implements ActionListener{
 		btnAtras.setBounds(10, 266, 76, 23);
 		add(btnAtras);
 		
-		JButton btnEnviarMensaje = new JButton("Enviar Mensaje");
+		btnEnviarMensaje = new JButton("Enviar Mensaje");
+		btnEnviarMensaje.addActionListener(this);
 		btnEnviarMensaje.setBounds(121, 266, 124, 23);
 		add(btnEnviarMensaje);
+		
+		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.setText("Nombre usuario");
+		txtNombreUsuario.setBounds(10, 75, 111, 20);
+		add(txtNombreUsuario);
+		txtNombreUsuario.setColumns(10);
+		
+		btnEnviarSolicitud = new JButton("Enviar Solicitud");
+		btnEnviarSolicitud.addActionListener(this);
+		btnEnviarSolicitud.setBounds(10, 106, 111, 23);
+		add(btnEnviarSolicitud);
 		
 		JLabel lblNoHayMensajes = new JLabel("No hay mensajes para mostrar");
 		
@@ -55,7 +71,7 @@ public class PanelUsuario extends JPanel implements ActionListener{
 		
 		if(user != null)
 		{
-			String[] columnas = {"Mensajes", "Fecha", "Usuario"};
+			String[] columnas = {"Notificaciones", "Fecha", "Usuario"};
 			ArrayList<Mensaje> msj = user.getMuro().getMensajes();
 			Object[][] inf = new Object[msj.size()][3];
 			if(msj.isEmpty())
@@ -119,6 +135,11 @@ public class PanelUsuario extends JPanel implements ActionListener{
 		if(e.getSource() ==btnAtras)
 		{
 			principal.ocultar();
+		}
+		
+		if(e.getSource() == btnEnviarSolicitud)
+		{
+			
 		}
 	}
 }
