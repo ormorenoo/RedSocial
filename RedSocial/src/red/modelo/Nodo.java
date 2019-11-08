@@ -3,67 +3,60 @@ package red.modelo;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Nodo 
-{
+public class Nodo {
 	private Usuario usuario;
 	private String nombre;
 	private int limiteConexiones;
 	private ArrayList<Nodo> enlaces;
-	
-	public Nodo(String nombre, Usuario usuario)
-	{
+
+	public Nodo(String nombre, Usuario usuario) {
 		this.nombre = nombre;
 		this.usuario = usuario;
 		limiteConexiones = 100;
 		enlaces = new ArrayList<Nodo>();
 	}
-	
-	//Metodo para concectar dos nodos
-	public void conectar(Nodo destino) throws IOException
-	{
-		if(enlaces.size() < limiteConexiones)
-		{
-			if(verificarConexRepetidas(destino))
-			{
+
+	// Metodo aceptar solicitud
+	public void aceptarSolicitud(Nodo a, Nodo b) throws IOException {
+		a.conectar(b);
+		b.conectar(a);
+	}
+
+	// Metodo para concectar dos nodos
+	public void conectar(Nodo destino) throws IOException {
+		if (enlaces.size() < limiteConexiones) {
+			if (verificarConexRepetidas(destino)) {
 				throw new IOException("Usuario existente.");
-			}else
-			{
+			} else {
 				enlaces.add(destino);
 			}
-		}else
-		{
+		} else {
 			throw new IOException("Limite de amigos superado.");
 		}
 	}
-	
-	public void desconectar(Nodo destino) throws IOException
-	{
+
+	public void desconectar(Nodo destino) throws IOException {
 		boolean cent = false;
-		for(int i = 0 ; i < enlaces.size() && cent == false ; i++)
-		{
-			if(destino.getNombre().equals(enlaces.get(i).getNombre()))
-			{
+		for (int i = 0; i < enlaces.size() && cent == false; i++) {
+			if (destino.getNombre().equals(enlaces.get(i).getNombre())) {
 				enlaces.remove(i);
 				cent = true;
 			}
 		}
-		if(cent == false)
-		{
+		if (cent == false) {
 			throw new IOException("Usuario no encontrado");
 		}
-	
+
 	}
-	
-	public boolean verificarConexRepetidas(Nodo nodo)
-	{
+
+	public boolean verificarConexRepetidas(Nodo nodo) {
 		boolean cent = false;
-		for(int i = 0 ; i < enlaces.size() && cent == false ; i++)
-		{
-			if(nodo.getNombre().equals(enlaces.get(i).getNombre()))
-			{
+		for (int i = 0; i < enlaces.size() && cent == false; i++) {
+			if (nodo.getNombre().equals(enlaces.get(i).getNombre())) {
 				cent = true;
 			}
-		}return cent;
+		}
+		return cent;
 	}
 
 	public Usuario getUsuario() {
@@ -86,6 +79,4 @@ public class Nodo
 		return enlaces;
 	}
 
-	
-	
 }

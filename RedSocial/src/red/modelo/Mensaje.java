@@ -1,41 +1,15 @@
 package red.modelo;
 
-public class Mensaje 
-{
-	private int meGusta;
-	private boolean compartir;
+public class Mensaje {
 	private Usuario userOrigen, userDestino;
 	private String texto;
 	private Fecha fecha;
-	
-	public Mensaje(Usuario userDestino, String texto, int meGusta, Fecha fecha)
-	{
+
+	public Mensaje(Usuario userDestino, String texto, Fecha fecha) {
 		this.userDestino = userDestino;
 		this.texto = texto;
 		this.fecha = fecha;
-		this.meGusta = meGusta;
 	}
-	
-
-	public int getMeGusta() {
-		return meGusta;
-	}
-
-
-	public void setMeGusta(int meGusta) {
-		this.meGusta = meGusta;
-	}
-
-
-	public boolean isCompartir() {
-		return compartir;
-	}
-
-
-	public void setCompartir(boolean compartir) {
-		this.compartir = compartir;
-	}
-
 
 	public Usuario getUserOrigen() {
 		return userOrigen;
@@ -68,6 +42,5 @@ public class Mensaje
 	public void setFecha(Fecha fecha) {
 		this.fecha = fecha;
 	}
-	
-	
+
 }
