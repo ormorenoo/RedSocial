@@ -92,4 +92,9 @@ public class VentanaAdministrador extends JFrame implements ActionListener{
 	{
 		return red.getUsuarios();
 	}
+	
+	public Red getRed()
+	{
+		return red;
+	}
 }

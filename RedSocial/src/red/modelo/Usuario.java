@@ -3,12 +3,11 @@ package red.modelo;
 public class Usuario 
 {
 	private Muro muro;
-	private String nombreUsuario, clave, nick;
+	private String clave, nick;
 	
-	public Usuario(String nombreUsuario, String clave, String nick)
+	public Usuario(String clave, String nick)
 	{
 		muro = new Muro();
-		this.nombreUsuario = nombreUsuario;
 		this.clave = clave;
 		this.nick = nick;
 	}
@@ -19,14 +18,6 @@ public class Usuario
 
 	public void setMuro(Muro muro) {
 		this.muro = muro;
-	}
-
-	public String getNombreUsuario() {
-		return nombreUsuario;
-	}
-
-	public void setNombreUsuario(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getClave() {
@@ -43,6 +34,11 @@ public class Usuario
 
 	public void setNick(String nick) {
 		this.nick = nick;
+	}
+	
+	public String toString()
+	{
+		return nick;
 	}
 	
 }

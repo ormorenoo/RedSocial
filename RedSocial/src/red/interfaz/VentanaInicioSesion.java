@@ -24,7 +24,6 @@ public class VentanaInicioSesion extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JTextField txtNick;
-	private JTextField txtNombre;
 	private JPasswordField passwordField;
 	private JButton btnCancelar;
 	private JButton btnAgregar;
@@ -54,22 +53,13 @@ public class VentanaInicioSesion extends JFrame implements ActionListener{
 		panel.add(separator);
 		
 		JLabel lblNickname = new JLabel("Nickname :");
-		lblNickname.setBounds(10, 27, 104, 14);
+		lblNickname.setBounds(121, 46, 104, 14);
 		panel.add(lblNickname);
 		
 		txtNick = new JTextField();
-		txtNick.setBounds(20, 52, 140, 20);
+		txtNick.setBounds(121, 71, 140, 20);
 		panel.add(txtNick);
 		txtNick.setColumns(10);
-		
-		JLabel lblNombre = new JLabel("Nombre :");
-		lblNombre.setBounds(215, 27, 82, 14);
-		panel.add(lblNombre);
-		
-		txtNombre = new JTextField();
-		txtNombre.setBounds(225, 52, 165, 20);
-		panel.add(txtNombre);
-		txtNombre.setColumns(10);
 		
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a :");
 		lblContrasea.setBounds(111, 102, 89, 14);
@@ -95,9 +85,9 @@ public class VentanaInicioSesion extends JFrame implements ActionListener{
 	{
 		if(e.getSource() == btnAgregar)
 		{
-			Usuario u = new Usuario(txtNombre.getText(), passwordField.getText(), txtNick.getText());
+			Usuario u = new Usuario(passwordField.getText(), txtNick.getText());
 			adm.registrarUsuario(u);
-			JOptionPane.showMessageDialog(null, "El usuario "+u.getNombreUsuario()+" ha sido agregado");
+			JOptionPane.showMessageDialog(null, "El usuario "+u.getNick()+" ha sido agregado");
 			this.setVisible(false);
 		}
 		

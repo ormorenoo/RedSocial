@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import red.modelo.Nodo;
 import red.modelo.Red;
 import red.modelo.Usuario;
 
@@ -66,5 +67,15 @@ public class VentanaPrincipal extends JFrame {
 	{
 		this.setVisible(false);
 		adm.setVisible(true);
+	}
+	
+	public Usuario buscarUsuario(String nombre)
+	{
+		return adm.getRed().buscarUsuario(nombre);
+	}
+	
+	public Nodo buscarNodo(String nick)
+	{
+		return adm.getRed().buscarNodo(nick);
 	}
 }

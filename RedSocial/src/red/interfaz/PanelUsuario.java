@@ -13,6 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumn;
 
 import red.modelo.Mensaje;
+import red.modelo.Nodo;
+import red.modelo.Publicacion;
 import red.modelo.Usuario;
 
 import javax.swing.JButton;
@@ -33,6 +35,7 @@ public class PanelUsuario extends JPanel implements ActionListener{
 	private JTextField txtNombreUsuario;
 	private JButton btnEnviarSolicitud;
 	private JButton btnEnviarMensaje;
+	private Usuario user;
 
 
 	/**
@@ -41,6 +44,7 @@ public class PanelUsuario extends JPanel implements ActionListener{
 	public PanelUsuario(VentanaPrincipal principal, Usuario user) 
 	{
 		this.principal = principal;
+		this.user = user;
 		setBounds(100, 100, 429, 302);
 		setLayout(null);
 		
@@ -72,7 +76,7 @@ public class PanelUsuario extends JPanel implements ActionListener{
 		if(user != null)
 		{
 			String[] columnas = {"Notificaciones", "Fecha", "Usuario"};
-			ArrayList<Mensaje> msj = user.getMuro().getMensajes();
+			ArrayList<Publicacion> msj = user.getMuro().getMensajes();
 			Object[][] inf = new Object[msj.size()][3];
 			if(msj.isEmpty())
 			{
@@ -139,7 +143,16 @@ public class PanelUsuario extends JPanel implements ActionListener{
 		
 		if(e.getSource() == btnEnviarSolicitud)
 		{
+			String nombre = txtNombreUsuario.getText();
 			
+			if(principal.buscarUsuario(nombre) != null)
+			{
+				Nodo origen = principal.buscarNodo(user.getNick());
+				Usuario d = principal.buscarUsuario(txtNombreUsuario.getText());
+				Nodo destino = principal.buscarNodo(d.getNick());
+				VentanaSolicitud solicitud = new VentanaSolicitud(origen, destino);
+				solicitud.setVisible(true);
+			}
 		}
 	}
 }

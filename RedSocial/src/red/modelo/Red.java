@@ -32,6 +32,18 @@ public class Red
 		return usuarios;
 	}
 	
+	public Nodo buscarNodo(String nick)
+	{
+		Nodo n = null;
+		for(Nodo value : grafo.values()) 
+		{
+			if(value.getNombre().equals(nick))
+			{
+				n = value;
+			}
+		}return n;
+	}
+	
 	public Usuario buscarUsuario(String nombre)
 	{
 		Usuario u = null;
@@ -41,7 +53,7 @@ public class Red
 		{
 			Usuario userB = usuarios.get(i);
 			
-			if(nombre.equalsIgnoreCase(userB.getNick()) || nombre.equalsIgnoreCase(userB.getNombreUsuario()))
+			if(nombre.equalsIgnoreCase(userB.getNick()))
 			{
 				u = userB;
 			}

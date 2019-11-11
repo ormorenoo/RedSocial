@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class Muro 
 {
-	private ArrayList<Mensaje> mensajes;
+	private ArrayList<Publicacion> publicaciones;
 	
 	public Muro()
 	{
-		mensajes = new ArrayList<Mensaje>();
+		publicaciones = new ArrayList<Publicacion>();
 	}
 
-	public ArrayList<Mensaje> getMensajes() {
-		return mensajes;
+	public ArrayList<Publicacion> getMensajes() {
+		return publicaciones;
 	}
 
-	public void setMensajes(ArrayList<Mensaje> mensajes) {
-		this.mensajes = mensajes;
+	public void setMensajes(ArrayList<Publicacion> publicaciones) {
+		this.publicaciones = publicaciones;
 	}
 	
 	
