@@ -8,12 +8,14 @@ public class Nodo {
 	private String nombre;
 	private int limiteConexiones;
 	private ArrayList<Nodo> enlaces;
+	private int size;
 
 	public Nodo(String nombre, Usuario usuario) {
 		this.nombre = nombre;
 		this.usuario = usuario;
 		limiteConexiones = 100;
 		enlaces = new ArrayList<Nodo>();
+		size = 0;
 	}
 
 	// Metodo aceptar solicitud
@@ -29,6 +31,7 @@ public class Nodo {
 				throw new IOException("Usuario existente.");
 			} else {
 				enlaces.add(destino);
+				size++;
 			}
 		} else {
 			throw new IOException("Limite de amigos superado.");
@@ -58,6 +61,11 @@ public class Nodo {
 		}
 		return cent;
 	}
+	
+	public Nodo seguirEnlace(int indice)
+	{
+		return enlaces.get(indice);
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -77,6 +85,11 @@ public class Nodo {
 
 	public ArrayList<Nodo> getEnlaces() {
 		return enlaces;
+	}
+	
+	public int getSize()
+	{
+		return size;
 	}
 
 }

@@ -53,6 +53,16 @@ public class Fecha
 		this.min = min;
 	}
 	
+	public String darFecha()
+	{
+		return año+"/"+mes+"/"+dia;
+	}
+	
+	public String darHora()
+	{
+		return hora+":"+min;
+	}
+	
 	public String toString()
 	{
 		String f = año+"/"+mes+"/"+dia+"/ "+hora+":"+min;

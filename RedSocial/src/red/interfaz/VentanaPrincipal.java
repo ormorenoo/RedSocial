@@ -22,18 +22,23 @@ public class VentanaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;
-	private JPanel panel;
+	
+	ArrayList<JPanel> paneles;
+	
 	private VentanaAdministrador adm;
 
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPrincipal(VentanaAdministrador adm) {
+	public VentanaPrincipal(VentanaAdministrador adm) 
+	{
 		this.adm = adm;
+		paneles = new ArrayList<JPanel>();
+		
 		setTitle("Red Social");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 502, 388);
+		setBounds(100, 100, 631, 388);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -51,15 +56,23 @@ public class VentanaPrincipal extends JFrame {
 		for(int i = 0 ; i < users.size() ; i++)
 		{
 			Usuario u = users.get(i);
-			panel = new PanelUsuario(this, u);
+			JPanel panel = new PanelUsuario(this, u);
+			paneles.add(panel);
 			tabbedPane.addTab(u.getNick(), null, panel, null);
 			panel.setLayout(null);
 		}
 		if(users.isEmpty())
 		{
-			panel = new PanelUsuario(this, null);
-			tabbedPane.addTab("Unknow", null, panel, null);
-			panel.setLayout(null);
+			//Lanzar alerta de no hay usuarios
+		}
+	}
+	
+	public void actualizarTablas()
+	{
+		for(int i = 0; i < paneles.size() ; i++)
+		{
+			PanelUsuario panel = (PanelUsuario) paneles.get(i);
+			panel.actualizarTable();
 		}
 	}
 	
