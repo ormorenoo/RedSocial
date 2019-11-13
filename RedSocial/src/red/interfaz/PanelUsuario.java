@@ -197,7 +197,7 @@ public class PanelUsuario extends JPanel implements ActionListener {
 			ArrayList<Publicacion> publicaciones = muro.getPublicacion();
 			Publicacion p = publicaciones.get(indice);
 			
-			VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p);
+			VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p, user);
 			ventanaPublicacion.setVisible(true);
 		}
 	}

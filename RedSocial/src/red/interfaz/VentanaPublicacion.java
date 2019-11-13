@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import red.modelo.Publicacion;
+import red.modelo.Usuario;
+
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,6 +26,7 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 	private JLabel lblLike;
 	
 	private Publicacion publicacion;
+	private Usuario user;
 	private int cont = 0;
 	private String texto;
 	
@@ -31,9 +34,10 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPublicacion(Publicacion publicacion) 
+	public VentanaPublicacion(Publicacion publicacion, Usuario user) 
 	{
 		this.publicacion = publicacion;
+		this.user = user;
 		texto = publicacion.getTexto();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,9 +92,9 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnLike) 
 		{
-			if(cont == 0)
+			if(publicacion.buscarUsuario(user) == false)
 			{
-				publicacion.setMeGusta();
+				publicacion.setMeGusta(user);
 				cont++;
 				lblLike.setText("Likes: "+publicacion.getMeGusta());
 			}

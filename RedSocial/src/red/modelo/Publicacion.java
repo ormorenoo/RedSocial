@@ -1,11 +1,14 @@
 package red.modelo;
 
+import java.util.ArrayList;
+
 public class Publicacion {
 
 	private int meGusta;
 	private Usuario userOrigen;
 	private String texto;
 	private Fecha fecha;
+	private ArrayList<Usuario> usersLikes;
 
 	public Publicacion(Usuario userOrigen, String texto, Fecha fecha) {
 		super();
@@ -13,15 +16,29 @@ public class Publicacion {
 		this.userOrigen = userOrigen;
 		this.texto = texto;
 		this.fecha = fecha;
+		usersLikes = new ArrayList<Usuario>();
+	}
+	
+	public boolean buscarUsuario(Usuario user)
+	{
+		boolean cent = false;
+		for(int i = 0 ; i < usersLikes.size() && cent == false ; i++)
+		{
+			if(user.getNick().equals(usersLikes.get(i).getNick()))
+			{
+				cent = true;
+			}
+		}return cent;
 	}
 
 	public int getMeGusta() {
 		return meGusta;
 	}
 
-	public void setMeGusta()
+	public void setMeGusta(Usuario user)
 	{
 		meGusta++;
+		usersLikes.add(user);
 	}
 
 	public Usuario getUserOrigen() {
