@@ -3,10 +3,12 @@ package red.interfaz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -15,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import red.modelo.Comentario;
 import red.modelo.Muro;
 import red.modelo.Nodo;
 import red.modelo.Publicacion;
@@ -32,6 +35,8 @@ public class PanelUsuario extends JPanel implements ActionListener {
 	private JButton btnPublicar;
 	private JTable table_1;
 	private JButton btnVerPublicacion ;
+	private JButton btnBloquear;
+	private JButton btnDesbloquear;
 	
 	private Usuario user;
 	private Muro muro;
@@ -48,7 +53,7 @@ public class PanelUsuario extends JPanel implements ActionListener {
 		muro = user.getMuro();
 		nodo = principal.buscarNodo(user.getNick());
 		
-		setBounds(100, 100, 583, 302);
+		setBounds(100, 100, 583, 343);
 		setLayout(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,7 +61,7 @@ public class PanelUsuario extends JPanel implements ActionListener {
 
 		btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(this);
-		btnAtras.setBounds(10, 266, 76, 23);
+		btnAtras.setBounds(10, 309, 76, 23);
 		add(btnAtras);
 
 		txtNombreUsuario = new JTextField();
@@ -71,13 +76,13 @@ public class PanelUsuario extends JPanel implements ActionListener {
 		add(btnEnviarSolicitud);
 
 		textFieldPublicacion = new JTextArea();
-		textFieldPublicacion.setBounds(10, 159, 206, 44);
+		textFieldPublicacion.setBounds(10, 207, 206, 44);
 		add(textFieldPublicacion);
 		textFieldPublicacion.setColumns(10);
 
 		btnPublicar = new JButton("Publicar");
 		btnPublicar.addActionListener(this);
-		btnPublicar.setBounds(69, 212, 89, 23);
+		btnPublicar.setBounds(69, 255, 89, 23);
 		add(btnPublicar);
 		
 		ArrayList<Publicacion> publicaciones = muro.getPublicacion();
@@ -98,6 +103,16 @@ public class PanelUsuario extends JPanel implements ActionListener {
 		btnVerPublicacion.addActionListener(this);
 		btnVerPublicacion.setBounds(329, 266, 140, 23);
 		add(btnVerPublicacion);
+		
+		btnBloquear = new JButton("Bloquear");
+		btnBloquear.addActionListener(this);
+		btnBloquear.setBounds(10, 134, 149, 23);
+		add(btnBloquear);
+		
+		btnDesbloquear = new JButton("Desbloquear");
+		btnDesbloquear.addActionListener(this);
+		btnDesbloquear.setBounds(10, 163, 149, 23);
+		add(btnDesbloquear);
 		
 	}
 	
@@ -167,6 +182,59 @@ public class PanelUsuario extends JPanel implements ActionListener {
 		muro.agregarPublicacion(pub, user);
 		
 	}
+	
+	public void agregarComentario(Publicacion pub, Comentario comentario)
+	{
+		Nodo p = principal.buscarNodo(pub.getUserOrigen().getNick());
+		for (int i = 0; i < p.getSize(); i++) 
+		{
+			Nodo nAmigo = p.seguirEnlace(i);
+			
+			if(nAmigo != null)
+			{
+				Usuario u = nAmigo.getUsuario();
+				Muro uMuro = u.getMuro();
+				ArrayList<Publicacion> pubs = uMuro.getPublicacion();
+				
+				for(int j = 0 ; j <pubs.size() ; j++)
+				{
+					Publicacion pu = pubs.get(j);
+					
+					if(pub.equals(pu))
+					{
+						pu.agregarComentario(comentario.getUserOrigen(), comentario.getTexto());
+					}
+				}	
+			}
+		}
+	}
+	
+	public void agregarLike(Publicacion pub)
+	{
+		Nodo p = principal.buscarNodo(pub.getUserOrigen().getNick());
+		
+		for (int i = 0; i < p.getSize(); i++) 
+		{
+			Nodo nAmigo = p.seguirEnlace(i);
+			
+			if(nAmigo != null)
+			{
+				Usuario u = nAmigo.getUsuario();
+				Muro uMuro = u.getMuro();
+				ArrayList<Publicacion> pubs = uMuro.getPublicacion();
+				
+				for(int j = 0 ; j <pubs.size() ; j++)
+				{
+					Publicacion pu = pubs.get(j);
+					
+					if(pub.equals(pu))
+					{
+						pu.setMeGusta(user);
+					}
+				}	
+			}
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -174,31 +242,134 @@ public class PanelUsuario extends JPanel implements ActionListener {
 			principal.ocultar();
 		}
 
-		if (e.getSource() == btnEnviarSolicitud) {
+		if (e.getSource() == btnEnviarSolicitud) 
+		{
 			String nombre = txtNombreUsuario.getText();
 
 			if (principal.buscarUsuario(nombre) != null) {
 				Usuario d = principal.buscarUsuario(txtNombreUsuario.getText());
 				Nodo destino = principal.buscarNodo(d.getNick());
-				VentanaSolicitud solicitud = new VentanaSolicitud(nodo, destino);
-				solicitud.setVisible(true);
+				
+				if(destino.isBloqueado(nodo))
+				{
+					VentanaAlerta alerta = new VentanaAlerta("No puedes enviar solicitudes a este usuario");
+					alerta.setVisible(true);
+				}else
+				{
+					if(nodo.isBloqueado(destino))
+					{
+						VentanaAlerta alerta = new VentanaAlerta("Desbloquea primero al usuario");
+						alerta.setVisible(true);
+					}else
+					{
+						VentanaSolicitud solicitud = new VentanaSolicitud(nodo, destino);
+						solicitud.setVisible(true);
+					}
+				}
+				
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no existe");
+				alerta.setVisible(true);
 			}
 		}
 
 		if (e.getSource() == btnPublicar) {
-			publicarMensaje();
-			principal.actualizarTablas();
-			textFieldPublicacion.setText("");
+			
+			if(textFieldPublicacion.getText().equals(""))
+			{
+				VentanaAlerta alerta = new VentanaAlerta("Debe escribir algo");
+				alerta.setVisible(true);
+			}else
+			{
+				publicarMensaje();
+				principal.actualizarTablas();
+				textFieldPublicacion.setText("");
+			}
+			
 		}
 		
 		if(e.getSource() == btnVerPublicacion)
 		{
-			int indice = table_1.getSelectedRow();
-			ArrayList<Publicacion> publicaciones = muro.getPublicacion();
-			Publicacion p = publicaciones.get(indice);
+			if(table_1.isRowSelected(table_1.getSelectedRow()))
+			{
+				int indice = table_1.getSelectedRow();
+				ArrayList<Publicacion> publicaciones = muro.getPublicacion();
+				Publicacion p = publicaciones.get(indice);
+				
+				VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p, user, this);
+				ventanaPublicacion.setVisible(true);
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("No hay publicaciones seleccionadas");
+				alerta.setVisible(true);
+			}
 			
-			VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p, user);
-			ventanaPublicacion.setVisible(true);
 		}
+		
+		if(e.getSource() == btnBloquear)
+		{
+			String nombre = txtNombreUsuario.getText();
+
+			if (principal.buscarUsuario(nombre) != null) 
+			{
+				Usuario d = principal.buscarUsuario(txtNombreUsuario.getText());
+				Nodo destino = principal.buscarNodo(d.getNick());
+				
+				if(nodo.isConectado(destino))
+				{
+					try {
+						if(nodo.isBloqueado(destino))
+						{
+							VentanaAlerta alerta = new VentanaAlerta("El usuario ya esta bloqueado");
+							alerta.setVisible(true);
+						}else
+						{
+							nodo.bloquear(nodo, destino);
+							JOptionPane.showMessageDialog(null, "Usuario bloqueado");
+						}
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}else
+				{
+					VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no es su amigo");
+					alerta.setVisible(true);
+				}
+				
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no existe");
+				alerta.setVisible(true);
+			}
+		}
+		
+		if(e.getSource() == btnDesbloquear)
+		{
+			String nombre = txtNombreUsuario.getText();
+
+			if (principal.buscarUsuario(nombre) != null) 
+			{
+				Usuario d = principal.buscarUsuario(txtNombreUsuario.getText());
+				Nodo destino = principal.buscarNodo(d.getNick());
+				
+				if(nodo.isBloqueado(destino))
+				{
+					nodo.desbloquear(destino);
+					JOptionPane.showMessageDialog(null, "Usuario desbloqueado");
+				}else
+				{
+					VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no esta bloqueado");
+					alerta.setVisible(true);
+				}
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no existe");
+				alerta.setVisible(true);
+			}
+			
+		}
+		
 	}
 }

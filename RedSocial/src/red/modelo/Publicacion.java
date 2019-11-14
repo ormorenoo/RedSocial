@@ -1,6 +1,7 @@
 package red.modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Publicacion {
 
@@ -9,6 +10,7 @@ public class Publicacion {
 	private String texto;
 	private Fecha fecha;
 	private ArrayList<Usuario> usersLikes;
+	private ArrayList<Comentario> comentarios;
 
 	public Publicacion(Usuario userOrigen, String texto, Fecha fecha) {
 		super();
@@ -17,6 +19,21 @@ public class Publicacion {
 		this.texto = texto;
 		this.fecha = fecha;
 		usersLikes = new ArrayList<Usuario>();
+		comentarios = new ArrayList<Comentario>();
+	}
+	
+	public void agregarComentario(Usuario userOrigen, String texto)
+	{
+		Date d = new Date();
+		Fecha f = new Fecha(d.getYear()+1900, d.getMonth()+1, d.getDay()+10, d.getHours(), d.getMinutes());
+		Comentario comentario = new Comentario(userOrigen, texto, f);
+		comentarios.add(comentario);
+	}
+	
+	public ArrayList<Comentario> getComentarios()
+	{
+		return comentarios;
+		
 	}
 	
 	public boolean buscarUsuario(Usuario user)
@@ -90,6 +107,22 @@ public class Publicacion {
 		}
 		return enc;
 		
+	}
+	
+	public boolean equals(Publicacion p)
+	{
+		boolean cent = false;
+		
+		if(p.getUserOrigen().equals(userOrigen))
+		{
+			if(p.getFecha().equals(fecha))
+			{
+				if(p.getTexto().equals(texto))
+				{
+					cent = true;
+				}
+			}
+		}return cent;
 	}
 
 }

@@ -69,5 +69,27 @@ public class Fecha
 		return f;
 	}
 	
+	public boolean equals(Fecha f)
+	{
+		boolean cent = false;
+		
+		if(f.getAño() == año)
+		{
+			if(f.getMes() == mes)
+			{
+				if(f.getDia() == dia)
+				{
+					if(f.getHora() == hora)
+					{
+						if(f.getMin() == min)
+						{
+							cent = true;
+						}
+					}
+				}
+			}
+		}return cent;
+	}
+	
 	
 }
