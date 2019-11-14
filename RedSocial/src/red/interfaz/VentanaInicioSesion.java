@@ -85,10 +85,18 @@ public class VentanaInicioSesion extends JFrame implements ActionListener{
 	{
 		if(e.getSource() == btnAgregar)
 		{
-			Usuario u = new Usuario(passwordField.getText(), txtNick.getText());
-			adm.registrarUsuario(u);
-			JOptionPane.showMessageDialog(null, "El usuario "+u.getNick()+" ha sido agregado");
-			this.setVisible(false);
+			if(adm.getRed().buscarUsuario(txtNick.getText()) == null)
+			{
+				Usuario u = new Usuario(passwordField.getText(), txtNick.getText());
+				adm.registrarUsuario(u);
+				JOptionPane.showMessageDialog(null, "El usuario "+u.getNick()+" ha sido agregado");
+				this.setVisible(false);
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("Ya existe un usuario con este nick");
+				alerta.setVisible(true);
+			}
+			
 		}
 		
 		if(e.getSource() == btnCancelar)

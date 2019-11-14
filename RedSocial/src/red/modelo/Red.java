@@ -60,5 +60,10 @@ public class Red
 		}return u;
 	}
 	
+	public boolean isVacio()
+	{
+		return grafo.isEmpty();
+	}
+	
 	
 }

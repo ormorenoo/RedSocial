@@ -72,9 +72,18 @@ public class VentanaAdministrador extends JFrame implements ActionListener{
 		
 		if(e.getSource() == btnAdministrarRed)
 		{
-			VentanaPrincipal principal = new VentanaPrincipal(this);
-			principal.setVisible(true);
-			this.setVisible(false);
+			if(red.isVacio())
+			{
+				VentanaAlerta alerta = new VentanaAlerta("Aun no hay usuarios agregados");
+				alerta.setVisible(true);
+			}else
+			{
+				VentanaPrincipal principal = new VentanaPrincipal(this);
+				principal.setVisible(true);
+				this.setVisible(false);
+			}
+
+			
 		}
 		
 		if(e.getSource() == btnSalir)

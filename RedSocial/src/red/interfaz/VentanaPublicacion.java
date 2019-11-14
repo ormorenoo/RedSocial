@@ -98,11 +98,10 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 				cont++;
 				lblLike.setText("Likes: "+publicacion.getMeGusta());
 			}
-			
 		}
 
-		if (e.getSource() == btnAtras) {
-
+		if (e.getSource() == btnAtras) 
+		{
 			this.setVisible(false);
 		}
 	}
