@@ -1,24 +1,33 @@
 package red.modelo;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Usuario {
 	private Muro muro;
 	private String clave, nick;
-	private ArrayList<Mensaje> mensaje;
-
-	public void agregarMensaje(String texto) {
-		Date d = new Date();
-		Fecha f = new Fecha(d.getYear() + 1900, d.getMonth() + 1, d.getDay() + 10, d.getHours(), d.getMinutes());
-		Mensaje p = new Mensaje(this, texto, f);
-		mensaje.add(p);
-	}
+	private ArrayList<Chat> chats;
 
 	public Usuario(String clave, String nick) {
 		muro = new Muro();
 		this.clave = clave;
 		this.nick = nick;
+		chats = new ArrayList<Chat>();
+	}
+
+	public void agregarChat(Usuario destino) {
+		Chat c = new Chat(destino);
+		chats.add(c);
+	}
+
+	public Chat buscarChat(Usuario destino) {
+		Chat c = null;
+
+		for (int i = 0; i < chats.size(); i++) {
+			if (chats.get(i).getUsuario2().getNick().equals(destino.getNick())) {
+				c = chats.get(i);
+			}
+		}
+		return c;
 	}
 
 	public Muro getMuro() {
@@ -49,12 +58,8 @@ public class Usuario {
 		return nick;
 	}
 
-	public ArrayList<Mensaje> getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(ArrayList<Mensaje> mensaje) {
-		this.mensaje = mensaje;
+	public ArrayList<Chat> getChats() {
+		return chats;
 	}
 
 }

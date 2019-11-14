@@ -22,35 +22,31 @@ public class Nodo {
 
 	// Metodo aceptar solicitud
 	public void aceptarSolicitud(Nodo a, Nodo b) throws IOException {
-		
+
 		a.conectar(b);
 		b.conectar(a);
 	}
-	
-	public void bloquear(Nodo a, Nodo b) throws IOException
-	{
+
+	public void bloquear(Nodo a, Nodo b) throws IOException {
 		a.desconectar(b);
 		b.desconectar(a);
-		
+
 		bloqueos.add(b);
 	}
-	
-	public void desbloquear(Nodo b)
-	{
+
+	public void desbloquear(Nodo b) {
 		bloqueos.remove(b);
 	}
-	
-	public boolean isBloqueado(Nodo b)
-	{
+
+	public boolean isBloqueado(Nodo b) {
 		boolean cent = false;
-		
-		for(int i = 0 ; i < bloqueos.size() && cent == false; i++)
-		{
-			if(b.getNombre().equals(bloqueos.get(i).getNombre()))
-			{
+
+		for (int i = 0; i < bloqueos.size() && cent == false; i++) {
+			if (b.getNombre().equals(bloqueos.get(i).getNombre())) {
 				cent = true;
 			}
-		}return cent;
+		}
+		return cent;
 	}
 
 	// Metodo para concectar dos nodos
@@ -67,14 +63,16 @@ public class Nodo {
 		}
 	}
 
-	public void desconectar(Nodo destino) throws IOException 
-	{
+	public void desconectar(Nodo destino) throws IOException {
 		boolean cent = false;
 		for (int i = 0; i < enlaces.size() && cent == false; i++) {
-			if (destino.getNombre().equals(enlaces.get(i).getNombre())) {
-				enlaces.set(i, null);
-				cent = true;
+			if (enlaces.get(i) != null) {
+				if (destino.getNombre().equals(enlaces.get(i).getNombre())) {
+					enlaces.set(i, null);
+					cent = true;
+				}
 			}
+
 		}
 		if (cent == false) {
 			throw new IOException("Usuario no encontrado");
@@ -85,8 +83,7 @@ public class Nodo {
 	public boolean verificarConexRepetidas(Nodo nodo) {
 		boolean cent = false;
 		for (int i = 0; i < enlaces.size() && cent == false; i++) {
-			if(enlaces.get(i) != null)
-			{
+			if (enlaces.get(i) != null) {
 				if (nodo.getNombre().equals(enlaces.get(i).getNombre())) {
 					cent = true;
 				}
@@ -94,26 +91,34 @@ public class Nodo {
 		}
 		return cent;
 	}
-	
-	public Nodo seguirEnlace(int indice)
-	{
+
+	public Nodo seguirEnlace(int indice) {
 		return enlaces.get(indice);
 	}
-	
-	public boolean isConectado(Nodo n)
-	{
+
+	public boolean isConectado(Nodo n) {
 		boolean cent = false;
-		for (int i = 0; i < enlaces.size() && cent == false; i++) 
-		{
-			if(enlaces.get(i) != null)
-			{
-				if (n.getNombre().equals(enlaces.get(i).getNombre())) 
-				{
+		for (int i = 0; i < enlaces.size() && cent == false; i++) {
+			if (enlaces.get(i) != null) {
+				if (n.getNombre().equals(enlaces.get(i).getNombre())) {
 					cent = true;
 				}
 			}
-			
-		}return cent;
+
+		}
+		return cent;
+	}
+
+	public boolean isEnlacesVacio() {
+		boolean cent = false;
+
+		for (int i = 0; i < enlaces.size() && cent == false; i++) {
+
+			if (enlaces.get(i) != null) {
+				cent = true;
+			}
+		}
+		return cent;
 	}
 
 	public Usuario getUsuario() {
@@ -135,14 +140,12 @@ public class Nodo {
 	public ArrayList<Nodo> getEnlaces() {
 		return enlaces;
 	}
-	
-	public ArrayList<Nodo> getBloqueos()
-	{
+
+	public ArrayList<Nodo> getBloqueos() {
 		return bloqueos;
 	}
-	
-	public int getSize()
-	{
+
+	public int getSize() {
 		return size;
 	}
 

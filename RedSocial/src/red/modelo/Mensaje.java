@@ -5,10 +5,10 @@ public class Mensaje {
 	private String texto;
 	private Fecha fecha;
 
-	public Mensaje(Usuario userDestino, String texto, Fecha fecha) {
+	public Mensaje(Usuario origen, Usuario userDestino, String texto) {
 		this.userDestino = userDestino;
+		this.userOrigen = origen;
 		this.texto = texto;
-		this.fecha = fecha;
 	}
 
 	public Usuario getUserOrigen() {
