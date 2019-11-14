@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import red.modelo.Comentario;
 import red.modelo.Muro;
 import red.modelo.Nodo;
 import red.modelo.Publicacion;
@@ -167,6 +168,31 @@ public class PanelUsuario extends JPanel implements ActionListener {
 		muro.agregarPublicacion(pub, user);
 		
 	}
+	
+	public void agregarComentario(Publicacion pub, Comentario comentario)
+	{
+		for (int i = 0; i < nodo.getSize(); i++) 
+		{
+			Nodo nAmigo = nodo.seguirEnlace(i);
+			
+			if(nAmigo != null)
+			{
+				Usuario u = nAmigo.getUsuario();
+				Muro uMuro = u.getMuro();
+				ArrayList<Publicacion> pubs = uMuro.getPublicacion();
+				
+				for(int j = 0 ; j <pubs.size() ; j++)
+				{
+					Publicacion p = pubs.get(j);
+					
+					if(pub.equals(p))
+					{
+						p.agregarComentario(comentario.getUserOrigen(), comentario.getTexto());
+					}
+				}	
+			}
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -182,23 +208,44 @@ public class PanelUsuario extends JPanel implements ActionListener {
 				Nodo destino = principal.buscarNodo(d.getNick());
 				VentanaSolicitud solicitud = new VentanaSolicitud(nodo, destino);
 				solicitud.setVisible(true);
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("El usuario buscado no existe");
+				alerta.setVisible(true);
 			}
 		}
 
 		if (e.getSource() == btnPublicar) {
-			publicarMensaje();
-			principal.actualizarTablas();
-			textFieldPublicacion.setText("");
+			
+			if(textFieldPublicacion.getText().equals(""))
+			{
+				VentanaAlerta alerta = new VentanaAlerta("Debe escribir algo");
+				alerta.setVisible(true);
+			}else
+			{
+				publicarMensaje();
+				principal.actualizarTablas();
+				textFieldPublicacion.setText("");
+			}
+			
 		}
 		
 		if(e.getSource() == btnVerPublicacion)
 		{
-			int indice = table_1.getSelectedRow();
-			ArrayList<Publicacion> publicaciones = muro.getPublicacion();
-			Publicacion p = publicaciones.get(indice);
+			if(table_1.isRowSelected(WHEN_FOCUSED))
+			{
+				int indice = table_1.getSelectedRow();
+				ArrayList<Publicacion> publicaciones = muro.getPublicacion();
+				Publicacion p = publicaciones.get(indice);
+				
+				VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p, user, this);
+				ventanaPublicacion.setVisible(true);
+			}else
+			{
+				VentanaAlerta alerta = new VentanaAlerta("No hay publicaciones seleccionadas");
+				alerta.setVisible(true);
+			}
 			
-			VentanaPublicacion ventanaPublicacion = new VentanaPublicacion(p, user);
-			ventanaPublicacion.setVisible(true);
 		}
 	}
 }

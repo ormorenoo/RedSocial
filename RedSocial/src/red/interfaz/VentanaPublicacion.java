@@ -2,6 +2,7 @@ package red.interfaz;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,20 +25,24 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 	private JButton btnLike;
 	private JButton btnAtras;
 	private JLabel lblLike;
+	private JButton btnComentar;
 	
 	private Publicacion publicacion;
 	private Usuario user;
 	private int cont = 0;
 	private String texto;
 	
+	private PanelUsuario panelUser;
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPublicacion(Publicacion publicacion, Usuario user) 
+	public VentanaPublicacion(Publicacion publicacion, Usuario user, PanelUsuario panelUser) 
 	{
 		this.publicacion = publicacion;
 		this.user = user;
+		this.panelUser = panelUser;
 		texto = publicacion.getTexto();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,6 +90,12 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 		btnAtras.setBounds(10, 227, 100, 23);
 		contentPane.add(btnAtras);
 		
+		btnComentar = new JButton("Comentar");
+		btnComentar.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnComentar.addActionListener(this);
+		btnComentar.setBounds(184, 164, 100, 23);
+		contentPane.add(btnComentar);
+		
 	}
 
 	@Override
@@ -103,6 +114,12 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 		if (e.getSource() == btnAtras) 
 		{
 			this.setVisible(false);
+		}
+		
+		if(e.getSource() == btnComentar)
+		{
+			VentanaComentarios ventanaComentarios = new VentanaComentarios(user, publicacion, panelUser);
+			ventanaComentarios.setVisible(true);
 		}
 	}
 }
