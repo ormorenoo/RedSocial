@@ -105,8 +105,7 @@ public class VentanaPublicacion extends JFrame implements ActionListener {
 		{
 			if(publicacion.buscarUsuario(user) == false)
 			{
-				publicacion.setMeGusta(user);
-				cont++;
+				panelUser.agregarLike(publicacion);
 				lblLike.setText("Likes: "+publicacion.getMeGusta());
 			}
 		}

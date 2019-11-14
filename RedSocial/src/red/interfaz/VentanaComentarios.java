@@ -64,7 +64,6 @@ public class VentanaComentarios extends JFrame implements ActionListener{
 		for (int i = 0; i < comentarios.size(); i++) 
 		{
 			String coment = comentarios.get(i).getTexto();
-			System.out.println("entra");
 			textPane.setText(textPane.getText()+coment+"\n\n");
 		}
 		

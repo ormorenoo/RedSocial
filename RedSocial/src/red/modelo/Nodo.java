@@ -8,6 +8,7 @@ public class Nodo {
 	private String nombre;
 	private int limiteConexiones;
 	private ArrayList<Nodo> enlaces;
+	private ArrayList<Nodo> bloqueos;
 	private int size;
 
 	public Nodo(String nombre, Usuario usuario) {
@@ -15,13 +16,41 @@ public class Nodo {
 		this.usuario = usuario;
 		limiteConexiones = 100;
 		enlaces = new ArrayList<Nodo>();
+		bloqueos = new ArrayList<Nodo>();
 		size = 0;
 	}
 
 	// Metodo aceptar solicitud
 	public void aceptarSolicitud(Nodo a, Nodo b) throws IOException {
+		
 		a.conectar(b);
 		b.conectar(a);
+	}
+	
+	public void bloquear(Nodo a, Nodo b) throws IOException
+	{
+		a.desconectar(b);
+		b.desconectar(a);
+		
+		bloqueos.add(b);
+	}
+	
+	public void desbloquear(Nodo b)
+	{
+		bloqueos.remove(b);
+	}
+	
+	public boolean isBloqueado(Nodo b)
+	{
+		boolean cent = false;
+		
+		for(int i = 0 ; i < bloqueos.size() && cent == false; i++)
+		{
+			if(b.getNombre().equals(bloqueos.get(i).getNombre()))
+			{
+				cent = true;
+			}
+		}return cent;
 	}
 
 	// Metodo para concectar dos nodos
@@ -38,11 +67,12 @@ public class Nodo {
 		}
 	}
 
-	public void desconectar(Nodo destino) throws IOException {
+	public void desconectar(Nodo destino) throws IOException 
+	{
 		boolean cent = false;
 		for (int i = 0; i < enlaces.size() && cent == false; i++) {
 			if (destino.getNombre().equals(enlaces.get(i).getNombre())) {
-				enlaces.remove(i);
+				enlaces.set(i, null);
 				cent = true;
 			}
 		}
@@ -55,8 +85,11 @@ public class Nodo {
 	public boolean verificarConexRepetidas(Nodo nodo) {
 		boolean cent = false;
 		for (int i = 0; i < enlaces.size() && cent == false; i++) {
-			if (nodo.getNombre().equals(enlaces.get(i).getNombre())) {
-				cent = true;
+			if(enlaces.get(i) != null)
+			{
+				if (nodo.getNombre().equals(enlaces.get(i).getNombre())) {
+					cent = true;
+				}
 			}
 		}
 		return cent;
@@ -65,6 +98,22 @@ public class Nodo {
 	public Nodo seguirEnlace(int indice)
 	{
 		return enlaces.get(indice);
+	}
+	
+	public boolean isConectado(Nodo n)
+	{
+		boolean cent = false;
+		for (int i = 0; i < enlaces.size() && cent == false; i++) 
+		{
+			if(enlaces.get(i) != null)
+			{
+				if (n.getNombre().equals(enlaces.get(i).getNombre())) 
+				{
+					cent = true;
+				}
+			}
+			
+		}return cent;
 	}
 
 	public Usuario getUsuario() {
@@ -85,6 +134,11 @@ public class Nodo {
 
 	public ArrayList<Nodo> getEnlaces() {
 		return enlaces;
+	}
+	
+	public ArrayList<Nodo> getBloqueos()
+	{
+		return bloqueos;
 	}
 	
 	public int getSize()
